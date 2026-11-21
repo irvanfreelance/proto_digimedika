@@ -14,7 +14,7 @@ import { useDemo } from '../../context/DemoContext';
 import { getClinicTheme } from '../../utils/clinicTheme';
 
 export const QueuePage: React.FC = () => {
-  const { clinicType, activeBooking, checkInBooking, addWalkInQueue } = useDemo();
+  const { clinicType, activeBooking, checkInBooking, addWalkInQueue, t } = useDemo();
   const theme = getClinicTheme(clinicType);
 
   const [wheelchairMode, setWheelchairMode] = useState(false);
@@ -80,8 +80,8 @@ export const QueuePage: React.FC = () => {
   return (
     <div className="px-4 py-4 space-y-5">
       <div>
-        <h1 className="font-display text-lg font-bold text-[#1E293B]">Antrian & Tiket Live</h1>
-        <p className="text-xs text-slate-500">Pantau posisi antrian & petunjuk arah ruangan</p>
+        <h1 className="font-display text-lg font-bold text-[#1E293B]">{t.queueTitle}</h1>
+        <p className="text-xs text-slate-500">{t.queueSub}</p>
       </div>
 
       {/* Active Ticket & Live Queue Card */}

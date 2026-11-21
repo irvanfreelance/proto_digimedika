@@ -16,9 +16,10 @@ import {
 import { useDemo } from '../context/DemoContext';
 import { ClinicType } from '../data/mockData';
 import { getClinicTheme } from '../utils/clinicTheme';
+import { LanguageSwitcher } from './LanguageSwitcher';
 
 export const PublicLayout: React.FC = () => {
-  const { clinicType, setClinicType } = useDemo();
+  const { clinicType, setClinicType, t } = useDemo();
   const navigate = useNavigate();
   const [switcherOpen, setSwitcherOpen] = useState(false);
 
@@ -27,19 +28,19 @@ export const PublicLayout: React.FC = () => {
   const clinicTabs: { id: ClinicType; label: string; dotColor: string; icon: React.ReactNode }[] = [
     {
       id: 'kecantikan',
-      label: 'Aesthetic',
+      label: t.clinicAesthetic,
       dotColor: 'bg-pink-600',
       icon: <Sparkles className="w-3.5 h-3.5" />,
     },
     {
       id: 'mata_gigi',
-      label: 'Mata & Gigi',
+      label: t.clinicDentalEye,
       dotColor: 'bg-blue-600',
       icon: <Eye className="w-3.5 h-3.5" />,
     },
     {
       id: 'lab',
-      label: 'Umum & Lab',
+      label: t.clinicLab,
       dotColor: 'bg-[#059669]',
       icon: <FlaskConical className="w-3.5 h-3.5" />,
     },
@@ -48,11 +49,11 @@ export const PublicLayout: React.FC = () => {
   const activeTab = clinicTabs.find((t) => t.id === clinicType)!;
 
   const navItems = [
-    { to: '/', label: 'Beranda', icon: Home, end: true },
-    { to: '/booking', label: 'Booking', icon: CalendarSearch },
-    { to: '/antrian', label: 'Antrian', icon: Ticket },
-    { to: '/riwayat', label: 'Riwayat', icon: ClipboardList },
-    { to: '/akun', label: 'Akun', icon: User },
+    { to: '/', label: t.navHome, icon: Home, end: true },
+    { to: '/booking', label: t.navBooking, icon: CalendarSearch },
+    { to: '/antrian', label: t.navQueue, icon: Ticket },
+    { to: '/riwayat', label: t.navHistory, icon: ClipboardList },
+    { to: '/akun', label: t.navAccount, icon: User },
   ];
 
   return (
@@ -79,13 +80,16 @@ export const PublicLayout: React.FC = () => {
             </div>
           </div>
 
-          <button
-            onClick={() => navigate('/panel/login')}
-            className="flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1.5 rounded-lg bg-[#1E293B] text-white hover:bg-slate-800 transition-colors cursor-pointer"
-          >
-            <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-            Panel Admin
-          </button>
+          <div className="flex items-center gap-1.5">
+            <LanguageSwitcher />
+            <button
+              onClick={() => navigate('/panel/login')}
+              className="flex items-center gap-1 text-[11px] font-semibold px-2.5 py-1.5 rounded-lg bg-[#1E293B] text-white hover:bg-slate-800 transition-colors cursor-pointer"
+            >
+              <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+              <span className="hidden sm:inline">{t.adminPanel}</span>
+            </button>
+          </div>
         </header>
 
         {/* Main Content */}

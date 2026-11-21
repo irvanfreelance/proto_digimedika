@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ShieldCheck, ArrowLeft, Building2, Stethoscope, Pill, UserCheck } from 'lucide-react';
 import { AdminRole, useDemo } from '../../context/DemoContext';
+import { LanguageSwitcher } from '../../components/LanguageSwitcher';
 
 export const AdminLoginPage: React.FC = () => {
-  const { loginAdmin } = useDemo();
+  const { loginAdmin, t } = useDemo();
   const navigate = useNavigate();
   const [email, setEmail] = useState('admin@digimedika.id');
   const [password, setPassword] = useState('••••••••');
@@ -80,11 +81,12 @@ export const AdminLoginPage: React.FC = () => {
       {/* Right Login Card */}
       <div className="lg:w-7/12 bg-[#F8FAF9] p-6 sm:p-12 flex items-center justify-center">
         <div className="w-full max-w-md bg-white rounded-3xl p-7 shadow-xl border border-slate-200/70 space-y-6">
-          <div>
-            <h2 className="font-display text-xl font-bold text-[#1E293B]">Masuk Portal Internal</h2>
-            <p className="text-xs text-slate-500 mt-1">
-              Gunakan akun staf atau pilih simulasi peran di bawah ini.
-            </p>
+          <div className="flex items-start justify-between gap-2">
+            <div>
+              <h2 className="font-display text-xl font-bold text-[#1E293B]">{t.adminPortalTitle}</h2>
+              <p className="text-xs text-slate-500 mt-1">{t.adminPortalSub}</p>
+            </div>
+            <LanguageSwitcher />
           </div>
 
           <form

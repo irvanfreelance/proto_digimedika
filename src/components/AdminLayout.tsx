@@ -21,9 +21,10 @@ import {
 } from 'lucide-react';
 import { useDemo } from '../context/DemoContext';
 import { CLINICS, ClinicType } from '../data/mockData';
+import { LanguageSwitcher } from './LanguageSwitcher';
 
 export const AdminLayout: React.FC = () => {
-  const { adminRole, logoutAdmin, clinicType, setClinicType } = useDemo();
+  const { adminRole, logoutAdmin, clinicType, setClinicType, t } = useDemo();
   const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
@@ -150,7 +151,7 @@ export const AdminLayout: React.FC = () => {
             className="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold bg-slate-800 text-emerald-300 hover:bg-slate-700 transition-colors cursor-pointer"
           >
             <Smartphone className="w-4 h-4" />
-            Lihat Versi Publik (Mobile)
+            {t.viewPublicMobile}
           </button>
           <button
             onClick={() => {
@@ -160,7 +161,7 @@ export const AdminLayout: React.FC = () => {
             className="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-medium text-rose-400 hover:bg-rose-500/10 transition-colors cursor-pointer"
           >
             <LogOut className="w-4 h-4" />
-            Keluar Panel
+            {t.logoutPanel}
           </button>
         </div>
       </aside>
@@ -183,6 +184,7 @@ export const AdminLayout: React.FC = () => {
           </div>
 
           <div className="flex items-center gap-2.5">
+            <LanguageSwitcher />
             <select
               value={clinicType}
               onChange={(e) => setClinicType(e.target.value as ClinicType)}

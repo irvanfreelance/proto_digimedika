@@ -20,7 +20,7 @@ import { CLINICS, DOCTORS, SERVICES } from '../../data/mockData';
 import { getClinicTheme } from '../../utils/clinicTheme';
 
 export const HomePage: React.FC = () => {
-  const { clinicType, patientName, activeBooking, checkInBooking } = useDemo();
+  const { clinicType, patientName, activeBooking, checkInBooking, t } = useDemo();
   const navigate = useNavigate();
 
   const clinic = CLINICS[clinicType];
@@ -80,7 +80,7 @@ export const HomePage: React.FC = () => {
       {/* Greeting & Active Clinic */}
       <div className="flex items-start justify-between">
         <div>
-          <p className="text-xs font-medium text-slate-500">Halo, Selamat Datang 👋</p>
+          <p className="text-xs font-medium text-slate-500">{t.greeting}</p>
           <h1 className="font-display text-xl font-bold text-[#1E293B] mt-0.5">{patientName}</h1>
           <div className={`flex items-center gap-1 text-xs ${theme.primaryText} font-medium mt-1`}>
             <MapPin className="w-3.5 h-3.5 shrink-0" />
@@ -117,9 +117,9 @@ export const HomePage: React.FC = () => {
         className="w-full flex items-center gap-3 bg-white border border-slate-200/90 rounded-2xl px-4 py-3 text-left shadow-sm hover:border-[#059669]/40 transition-all cursor-pointer"
       >
         <Search className="w-4 h-4 text-[#059669]" />
-        <span className="text-sm text-slate-400 flex-1">Cari dokter, layanan, atau lab...</span>
+        <span className="text-sm text-slate-400 flex-1">{t.searchPlaceholder}</span>
         <span className="text-[11px] font-semibold text-[#059669] bg-[#ECFDF5] px-2 py-0.5 rounded-md">
-          Booking
+          {t.navBooking}
         </span>
       </button>
 
@@ -131,11 +131,11 @@ export const HomePage: React.FC = () => {
           <div className="absolute -right-6 -top-6 w-28 h-28 rounded-full bg-white/10" />
           <div className="flex items-center justify-between mb-2">
             <span className="text-[11px] font-semibold uppercase tracking-wider bg-white/20 px-2.5 py-0.5 rounded-full">
-              Booking Mendatang • {activeBooking.code}
+              {t.upcomingBooking} • {activeBooking.code}
             </span>
             {activeBooking.isExecutive && (
               <span className="text-[10px] font-bold bg-amber-300 text-amber-950 px-2 py-0.5 rounded-full flex items-center gap-1">
-                <Sparkles className="w-3 h-3" /> EKSEKUTIF
+                <Sparkles className="w-3 h-3" /> {t.executive}
               </span>
             )}
           </div>
@@ -228,13 +228,13 @@ export const HomePage: React.FC = () => {
 
       {/* Quick Shortcuts */}
       <div>
-        <h3 className="font-display font-bold text-sm text-[#1E293B] mb-2.5">Pintasan Cepat</h3>
+        <h3 className="font-display font-bold text-sm text-[#1E293B] mb-2.5">{t.quickShortcuts}</h3>
         <div className="grid grid-cols-4 gap-2.5">
           {[
-            { label: 'Hasil Lab', icon: FlaskConical, to: '/riwayat', color: 'bg-emerald-50 text-[#059669]' },
-            { label: 'Obat Saya', icon: Pill, to: '/riwayat', color: 'bg-teal-50 text-teal-700' },
-            { label: 'Keluarga', icon: Users, to: '/akun', color: 'bg-sky-50 text-sky-700' },
-            { label: 'Wayfinder', icon: Navigation, to: '/antrian', color: 'bg-amber-50 text-amber-700' },
+            { label: t.labResults, icon: FlaskConical, to: '/riwayat', color: 'bg-emerald-50 text-[#059669]' },
+            { label: t.myMeds, icon: Pill, to: '/riwayat', color: 'bg-teal-50 text-teal-700' },
+            { label: t.family, icon: Users, to: '/akun', color: 'bg-sky-50 text-sky-700' },
+            { label: t.wayfinderBtn, icon: Navigation, to: '/antrian', color: 'bg-amber-50 text-amber-700' },
           ].map((item) => {
             const Icon = item.icon;
             return (

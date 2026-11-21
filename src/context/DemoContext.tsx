@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 import {
   ClinicType,
   FamilyMember,
@@ -8,6 +8,7 @@ import {
   PrescriptionItem,
   QueueItem,
 } from '../data/mockData';
+import { Language, translations } from '../i18n/translations';
 
 export type AdminRole = 'owner' | 'frontdesk' | 'dokter' | 'apotek';
 
@@ -25,6 +26,10 @@ export interface ActiveBooking {
 }
 
 interface DemoContextType {
+  language: Language;
+  setLanguage: (lang: Language) => void;
+  isRtl: boolean;
+  t: (typeof translations)[Language];
   clinicType: ClinicType;
   setClinicType: (type: ClinicType) => void;
   isPatientLoggedIn: boolean;
@@ -51,7 +56,13 @@ interface DemoContextType {
 const DemoContext = createContext<DemoContextType | undefined>(undefined);
 
 export const DemoProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [language, setLanguage] = useState<Language>('id');
   const [clinicType, setClinicType] = useState<ClinicType>('kecantikan');
+
+  useEffect(() => {
+    document.documentElement.dir = language === 'ar' ? 'rtl' : 'ltr';
+    document.documentElement.lang = language;
+  }, [language]);
   const [isPatientLoggedIn, setIsPatientLoggedIn] = useState<boolean>(true);
   const [patientPhone, setPatientPhone] = useState<string>('0812-8899-4411');
   const [adminRole, setAdminRole] = useState<AdminRole | null>(null);
@@ -196,6 +207,10 @@ export const DemoProvider: React.FC<{ children: React.ReactNode }> = ({ children
   return (
     <DemoContext.Provider
       value={{
+        language,
+        setLanguage,
+        isRtl: language === 'ar',
+        t: translations[language],
         clinicType,
         setClinicType,
         isPatientLoggedIn,

@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { Volume2 } from 'lucide-react';
 import { useDemo } from '../../context/DemoContext';
 import { CLINICS } from '../../data/mockData';
+import { LanguageSwitcher } from '../../components/LanguageSwitcher';
 
 export const TvDisplayPage: React.FC = () => {
-  const { queues, clinicType } = useDemo();
+  const { queues, clinicType, t } = useDemo();
   const clinic = CLINICS[clinicType];
   const [now, setNow] = useState(new Date());
 
@@ -30,13 +31,16 @@ export const TvDisplayPage: React.FC = () => {
           </div>
         </div>
 
-        <div className="text-right">
+        <div className="flex items-center gap-4">
+          <LanguageSwitcher dark />
+          <div className="text-right">
           <p className="font-display font-extrabold font-mono text-3xl text-white">
             {now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
           </p>
           <p className="text-xs text-slate-400">
             {now.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}
           </p>
+        </div>
         </div>
       </header>
 
@@ -46,7 +50,7 @@ export const TvDisplayPage: React.FC = () => {
         <div className="lg:col-span-2 bg-gradient-to-br from-[#059669] to-[#047857] rounded-3xl p-10 flex flex-col justify-between shadow-2xl">
           <div className="flex items-center justify-between">
             <span className="text-sm font-bold uppercase tracking-widest bg-white/20 px-4 py-1.5 rounded-full">
-              Sedang Dipanggil
+              {t.tvCalled}
             </span>
             <span className="flex items-center gap-2 text-sm font-semibold text-emerald-100">
               <Volume2 className="w-5 h-5 animate-pulse" /> Suara Pemanggil Aktif
@@ -66,7 +70,7 @@ export const TvDisplayPage: React.FC = () => {
               <p className="font-display text-2xl font-bold">{active?.room || 'Ruang Laser 1 (Lt. 2)'}</p>
             </div>
             <div className="text-right">
-              <p className="text-xs uppercase tracking-wider text-emerald-100/80">Dokter / Layanan</p>
+              <p className="text-xs uppercase tracking-wider text-emerald-100/80">{t.tvDoctor}</p>
               <p className="text-lg font-semibold">{active?.doctorName}</p>
             </div>
           </div>
@@ -76,7 +80,7 @@ export const TvDisplayPage: React.FC = () => {
         <div className="bg-slate-900/90 border border-slate-800 rounded-3xl p-6 flex flex-col justify-between">
           <div className="space-y-4">
             <h2 className="font-display text-lg font-bold uppercase tracking-wider text-slate-400">
-              Antrian Berikutnya
+              {t.tvNext}
             </h2>
             <div className="space-y-3">
               {nextList.map((q) => (
