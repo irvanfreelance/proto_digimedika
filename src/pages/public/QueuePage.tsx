@@ -12,9 +12,10 @@ import {
 } from 'lucide-react';
 import { useDemo } from '../../context/DemoContext';
 import { getClinicTheme } from '../../utils/clinicTheme';
+import { formatLocalizedNumber } from '../../i18n/translations';
 
 export const QueuePage: React.FC = () => {
-  const { clinicType, activeBooking, checkInBooking, addWalkInQueue, t } = useDemo();
+  const { clinicType, activeBooking, checkInBooking, addWalkInQueue, t, language } = useDemo();
   const theme = getClinicTheme(clinicType);
 
   const [wheelchairMode, setWheelchairMode] = useState(false);
@@ -44,13 +45,20 @@ export const QueuePage: React.FC = () => {
     const h = Math.floor(sec / 3600);
     const m = Math.floor((sec % 3600) / 60);
     const s = sec % 60;
-    return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+    const raw = `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+    return formatLocalizedNumber(raw, language);
   };
 
   const formatCountdownText = (sec: number) => {
     const h = Math.floor(sec / 3600);
     const m = Math.floor((sec % 3600) / 60);
     const s = sec % 60;
+    if (language === 'ar') {
+      return formatLocalizedNumber(`متبقي ${h} ساعة و ${m} دقيقة و ${s} ثانية`, 'ar');
+    }
+    if (language === 'en') {
+      return `${h} hr ${m} min ${s} sec left`;
+    }
     return `${h} jam ${m} menit ${s} detik lagi`;
   };
 
@@ -148,16 +156,16 @@ export const QueuePage: React.FC = () => {
               <div className="grid grid-cols-2 gap-2 pt-1 text-xs">
                 <div className="bg-white/80 rounded-xl p-2.5">
                   <p className="text-[10px] text-slate-500 flex items-center gap-1">
-                    <Users className="w-3 h-3" /> Posisi Anda
+                    <Users className="w-3 h-3" /> {t.posLabel}
                   </p>
                   <p className="font-bold text-[#1E293B] mt-0.5">
-                    Urutan ke-{myOrder} dari {totalQueue}
+                    {t.orderOf} {formatLocalizedNumber(`${myOrder}/${totalQueue}`, language)}
                   </p>
                 </div>
                 <div className="bg-white/80 rounded-xl p-2.5">
-                  <p className="text-[10px] text-slate-500">Sedang Dihandle</p>
+                  <p className="text-[10px] text-slate-500">{t.servingLabel}</p>
                   <p className="font-bold text-[#1E293B] mt-0.5">
-                    Urutan ke-{currentOrder} (E-0{currentOrder})
+                    {t.orderOf} {formatLocalizedNumber(currentOrder, language)}
                   </p>
                 </div>
               </div>

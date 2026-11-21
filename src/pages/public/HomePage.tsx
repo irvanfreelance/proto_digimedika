@@ -18,9 +18,10 @@ import {
 import { useDemo } from '../../context/DemoContext';
 import { CLINICS, DOCTORS, SERVICES } from '../../data/mockData';
 import { getClinicTheme } from '../../utils/clinicTheme';
+import { formatLocalizedNumber } from '../../i18n/translations';
 
 export const HomePage: React.FC = () => {
-  const { clinicType, patientName, activeBooking, checkInBooking, t } = useDemo();
+  const { clinicType, patientName, activeBooking, checkInBooking, t, language } = useDemo();
   const navigate = useNavigate();
 
   const clinic = CLINICS[clinicType];
@@ -51,13 +52,20 @@ export const HomePage: React.FC = () => {
     const h = Math.floor(sec / 3600);
     const m = Math.floor((sec % 3600) / 60);
     const s = sec % 60;
-    return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+    const raw = `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+    return formatLocalizedNumber(raw, language);
   };
 
   const formatCountdownText = (sec: number) => {
     const h = Math.floor(sec / 3600);
     const m = Math.floor((sec % 3600) / 60);
     const s = sec % 60;
+    if (language === 'ar') {
+      return formatLocalizedNumber(`متبقي ${h} ساعة و ${m} دقيقة و ${s} ثانية`, 'ar');
+    }
+    if (language === 'en') {
+      return `${h} hr ${m} min ${s} sec left`;
+    }
     return `${h} jam ${m} menit ${s} detik lagi`;
   };
 
@@ -157,10 +165,10 @@ export const HomePage: React.FC = () => {
               <div className="bg-amber-300 text-amber-950 rounded-2xl px-3.5 py-2.5 flex items-center justify-between shadow-sm">
                 <div>
                   <p className="text-[10px] font-bold uppercase tracking-wider opacity-80">
-                    Estimasi Giliran Anda
+                    {t.estTurn}
                   </p>
                   <p className="font-display font-extrabold font-mono text-2xl leading-tight tracking-tight">
-                    {countdownSec === 0 ? 'GILIRAN ANDA!' : formatCountdown(countdownSec)}
+                    {countdownSec === 0 ? t.yourTurn : formatCountdown(countdownSec)}
                   </p>
                   {countdownSec > 0 && (
                     <p className="text-[11px] font-semibold opacity-85 mt-0.5">
@@ -173,23 +181,29 @@ export const HomePage: React.FC = () => {
                   className="px-2.5 py-1.5 rounded-xl bg-amber-950/15 hover:bg-amber-950/25 text-amber-950 text-[11px] font-bold flex items-center gap-1 transition-colors cursor-pointer"
                   title="Simulasikan Antrian Maju"
                 >
-                  <RefreshCw className="w-3.5 h-3.5" /> Maju
+                  <RefreshCw className="w-3.5 h-3.5" /> {t.advanceBtn}
                 </button>
               </div>
 
               <div className="bg-white/15 backdrop-blur-xs rounded-xl p-2.5 grid grid-cols-3 gap-2 text-[11px]">
                 <div>
-                  <p className="text-white/75 text-[10px]">Posisi Anda</p>
-                  <p className="font-bold">Urutan {myOrder}/{totalQueue}</p>
-                </div>
-                <div>
-                  <p className="text-white/75 text-[10px]">Dihandle</p>
-                  <p className="font-bold">Urutan {currentOrder}</p>
-                </div>
-                <div>
-                  <p className="text-white/75 text-[10px]">Sisa</p>
+                  <p className="text-white/75 text-[10px]">{t.posLabel}</p>
                   <p className="font-bold">
-                    {remainingQueues === 0 ? 'Sekarang' : `${remainingQueues} lagi`}
+                    {t.orderOf} {formatLocalizedNumber(`${myOrder}/${totalQueue}`, language)}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-white/75 text-[10px]">{t.servingLabel}</p>
+                  <p className="font-bold">
+                    {t.orderOf} {formatLocalizedNumber(currentOrder, language)}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-white/75 text-[10px]">{t.remainingLabel}</p>
+                  <p className="font-bold">
+                    {remainingQueues === 0
+                      ? t.nowLabel
+                      : `${formatLocalizedNumber(remainingQueues, language)} ${t.moreSuffix}`}
                   </p>
                 </div>
               </div>

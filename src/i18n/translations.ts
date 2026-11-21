@@ -1,5 +1,13 @@
 export type Language = 'id' | 'en' | 'ar';
 
+const ARABIC_DIGITS = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
+
+export function formatLocalizedNumber(input: string | number, lang: Language): string {
+  const str = String(input);
+  if (lang !== 'ar') return str;
+  return str.replace(/\d/g, (d) => ARABIC_DIGITS[Number(d)]);
+}
+
 export const translations = {
   id: {
     // Nav & Common
